@@ -29,12 +29,6 @@ module Trello
   end
 
  class Client
-    attr_accessor :attributes
-
-    def initialize
-      @configuration
-    end
-
     def configure(&block)
       return puts "No configuration details passed" unless block_given?
       yield configuration
