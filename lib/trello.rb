@@ -22,46 +22,17 @@ module Trello
     end
   end
 
-  # block for taking in some credentials
-  def self.configure(&block)
-    member.configure(&block)
-  end
-
   # parse url using httparty and return json
   def self.parse(url)
     response = HTTParty.get(url, format: :plain)
     JSON.parse(response, symbolize_names: true)
   end
 
-  # initialize a member in the environment
-  def self.member
-    @member ||= Member.new
-  end
+ class Client
+    attr_accessor :attributes
 
-  # class methods in the Member object access the environment
-  # instance methods do the actual work
-  def self.find(username)
-    member.find(username)
-  end
-
-  class Member
-    attr_accessor :attributes, :configuration, :username
-
-    def initialize(attrs = {})
-      @attributes = attrs
+    def initialize
       @configuration
-      @username
-    end
-
-    def self.find(username)
-      @username = username
-      Trello.find(username)
-    end
-
-    def find(username)
-      url = "https://api.trello.com/1/members/#{username}?fields=all&#{credentials}"
-      @attributes = Trello.parse(url)
-      self
     end
 
     def configure(&block)
@@ -76,6 +47,46 @@ module Trello
 
     def credentials
       "key=#{configuration.consumer_key}&token=#{configuration.oauth_token}"
+    end
+  end
+
+  # initialize a client in the environment
+  def self.client
+    @client ||= Client.new
+  end
+
+  # block for taking in some credentials
+  def self.configure(&block)
+    client.configure(&block)
+  end
+
+  # class methods in the Client object access the environment
+  # instance methods do the actual work
+  def self.credentials
+    client.credentials
+  end
+
+  class Member
+    attr_accessor :attributes, :username
+
+    def initialize(attrs = {})
+      @attributes = attrs
+      @username
+    end
+
+    def credentials
+      Trello.credentials
+    end
+
+    def self.find(username)
+      @username = username
+      Trello.find(username)
+    end
+
+    def find(username)
+      url = "https://api.trello.com/1/members/#{username}?fields=all&#{credentials}"
+      @attributes = Trello.parse(url)
+      self
     end
 
     def full_name
@@ -103,4 +114,16 @@ module Trello
       board_names
     end
   end
+
+  # initialize a member in the environment
+  def self.member
+    @member ||= Member.new
+  end
+
+  # class methods in the Member object access the environment
+  # instance methods do the actual work
+  def self.find(username)
+    member.find(username)
+  end
+
 end
