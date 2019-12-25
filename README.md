@@ -1,6 +1,6 @@
 # Ruby Trello Lite
 
-This is a learning project using this gem: [ruby-trello](https://github.com/jeremytregunna/ruby-trello/blob/0e41660753cbbf1f68b005e408097a27019c6c8d/lib/trello/basic_data.rb#L45).
+This is a learning project using this gem: [ruby-trello](https://github.com/jeremytregunna/ruby-trello).
 
 The idea behind this project is to replicate some features using the examples in the gem's documentation.
 
