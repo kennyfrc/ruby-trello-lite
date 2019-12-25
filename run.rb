@@ -19,4 +19,4 @@ puts kenn.full_name
 puts kenn.bio
 
 # boards
-puts kenn.boards
+puts kenn.boards(10)

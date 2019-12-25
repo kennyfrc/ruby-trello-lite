@@ -14,7 +14,7 @@ module Trello
     attr_accessor *CONFIG_ATTRIBUTES
 
     def initialize(attrs = {})
-      self.attributes = attrs
+      @attributes = attrs
     end
 
     def attributes=(attrs = {})
@@ -64,7 +64,7 @@ module Trello
       self
     end
 
-    def configure
+    def configure(&block)
       return puts "No configuration details passed" unless block_given?
       yield configuration
       puts "Configuration worked!"
@@ -75,7 +75,7 @@ module Trello
     end
 
     def credentials
-      "key=#{@configuration.consumer_key}&token=#{@configuration.oauth_token}"
+      "key=#{configuration.consumer_key}&token=#{configuration.oauth_token}"
     end
 
     def full_name
