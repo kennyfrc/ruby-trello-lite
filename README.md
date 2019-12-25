@@ -48,7 +48,7 @@ puts bob.boards(10)
 ## TODO:
 
 * Add ability to do `bob.boards.first` and `bob.boards.first.list`
-* Add ability to do `bob.boards("Board Name").list`
+* Add ability to do `bob.boards.find("Board Name").list`
 
 
 ## Things I've Learned:
