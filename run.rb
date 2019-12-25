@@ -6,7 +6,7 @@ require './lib/trello'
 # vaues to the instance variables of that "config" object
 Trello.configure do |config|
 	config.consumer_key = ENV['CONSUMER_KEY']
-  config.oauth_token = ENV['OAUTH_TOKEN']
+	config.oauth_token = ENV['OAUTH_TOKEN']
 end
 
 # get member object for kennyfrc
