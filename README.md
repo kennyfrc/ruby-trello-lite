@@ -94,6 +94,7 @@ end
 	* What I've noticed is that it's mainly a tool to add instance variables,
 		methods, and classes after it has been defined. It reminds me of 
 			the way you can set methods in javascript after an object has been defined.
+* Memoization: this is a way for you to easily define and reference instance variables without doing too many expensive method calls.
 
 ## New techniques used:
 
