@@ -34,7 +34,7 @@ puts bob.full_name # "Bob Tester"
 puts bob.bio # A wonderfully delightful test user
 ```
 
-3. List member boards
+3. List member boards (returns an array instead of ActiveModel:Associations)
 
 ```
 # Print boards
@@ -44,11 +44,44 @@ puts bob.boards
 # Optional: limit the number of boards to view
 
 puts bob.boards(10)
+
 ```
+
+4. Find board (Custom to this gem)
+
+```
+
+okrs_board = bob.find_board("okrs")
+
+puts okrs_board
+
+```
+
+5. Get all the lists of that board and their names
+
+```
+
+puts okrds_board.lists
+
+# print all the list names of that board
+okrs_board.lists.each do |list|
+  puts list.name
+end
+
+```
+
+6. Get all the cards of a list and get all their names
+
+```
+
+okrs_board.lists.first.cards.each do |card|
+  puts card.name  
+end
+```
+
 ## TODO:
 
-* Add ability to do `bob.boards.first` and `bob.boards.first.list`
-* Add ability to do `bob.boards.find("Board Name").list`
+* Use active model so `bob.boards` returns a ActiveRecord-style associations object instead of just an array
 
 
 ## Things I've Learned:
@@ -61,3 +94,17 @@ puts bob.boards(10)
 	* What I've noticed is that it's mainly a tool to add instance variables,
 		methods, and classes after it has been defined. It reminds me of 
 			the way you can set methods in javascript after an object has been defined.
+
+## New techniques used:
+
+* When consuming the JSON response of the API, assign it to an `@attributes` instance variable. In the future, you can do metaprogramming to automatically produce instance methods for this.
+```
+
+    def find(username)
+      url = "https://api.trello.com/1/members/#{username}?fields=all&#{credentials}"
+      @attributes = Trello.parse(url)
+      self
+    end
+
+```
+

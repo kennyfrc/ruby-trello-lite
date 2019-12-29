@@ -19,7 +19,23 @@ puts kenn.full_name
 puts kenn.bio
 
 # boards
-puts kenn.boards(10)  
+puts kenn.boards(3)  
 
-# * Add ability to do `bob.boards.first` and `bob.boards.first.list`
-# * Add ability to do `bob.boards.find("Board Name").list`
+# find board
+board = kenn.find_board("okrs")
+
+# get board name
+puts board.name
+
+# get all the lists of that board
+puts board.lists
+
+# print all the list names of that board
+board.lists.each do |list|
+  puts list.name
+end
+
+# print all the card names of the first list of the board
+board.lists.first.cards.each do |card|
+  puts card.name  
+end
