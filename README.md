@@ -61,7 +61,7 @@ puts okrs_board
 
 ```
 
-puts okrds_board.lists
+puts okrs_board.lists
 
 # print all the list names of that board
 okrs_board.lists.each do |list|
