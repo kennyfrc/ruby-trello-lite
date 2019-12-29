@@ -23,6 +23,7 @@ module Trello
       @attributes = attrs
     end
 
+    # this only works if you pass values through a block
     def attributes=(attrs = {})
       attrs.each { |key, value| instance_variable_set("@#{key}", value) }
     end
