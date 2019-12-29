@@ -61,11 +61,10 @@ module Trello
   end
 
   class Member
-    attr_accessor :attributes, :username
+    attr_accessor :attributes
 
     def initialize(attrs = {})
       @attributes = attrs
-      @username
     end
 
     def credentials

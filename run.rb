@@ -19,4 +19,7 @@ puts kenn.full_name
 puts kenn.bio
 
 # boards
-puts kenn.boards(10)
+puts kenn.boards(10)  
+
+# * Add ability to do `bob.boards.first` and `bob.boards.first.list`
+# * Add ability to do `bob.boards.find("Board Name").list`
