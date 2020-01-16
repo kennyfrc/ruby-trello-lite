@@ -33,7 +33,6 @@ module Trello
     def configure(&block)
       return puts "No configuration details passed" unless block_given?
       yield configuration
-      puts "Configuration worked!"
     end
 
     def configuration
@@ -70,6 +69,7 @@ module Trello
     # to help the user better understand the API.
     def initialize(attrs = {})
       @attributes = attrs
+      @boards = []
     end
 
     def credentials
@@ -101,22 +101,19 @@ module Trello
 
     # just returns an array for now - would be cool to use activemodel
     def boards(number = "none")
-      board_objects = []
       attributes[:idBoards].each_with_index do |id_board, idx|
         number == "none" ? number = attributes[:idBoards].size : number
         board_number = idx + 1
-        puts "Loading board #{board_number} of #{number} | Total is #{attributes[:idBoards].size}"
-        board_objects << Board.new(id_board)
+        @boards << Board.new(id_board)
         break if board_number == number
       end
-      board_objects
+      @boards
     end
 
     def find_board(name)
       board = nil
       attributes[:idBoards].each_with_index do |id_board, idx|
         board_number = idx + 1
-        puts "Checking #{board_number} of #{attributes[:idBoards].size}"
         Board.new(id_board).name.downcase.include?(name.downcase) ? board = Board.new(id_board) : next
         break
       end
@@ -136,11 +133,12 @@ module Trello
   end
 
   class Board
-    attr_accessor :id, :lists
+    attr_accessor :id, :lists, :attributes
 
     def initialize(id, attrs = {})
       @id = id
       @lists = []
+      @attributes = attrs
       find(id)
     end
 
@@ -156,22 +154,44 @@ module Trello
         list = List.new(list_json)
         @lists << list
       end
+      self
+    end
+
+    def find_list(name)
+      list_obj = nil
+      lists.each do |list|
+        list_obj = list if list.name == name
+      end
+      if list_obj.nil?
+        puts "List doesn't exist. Here are some list names."
+        lists.each do |list|
+          puts list.name
+        end
+      else
+        list_obj
+      end
+    end
+
+    def lists
+      @lists
     end
 
     def name
-      @attributes[:name]
+      attributes[:name]
     end
 
     def desc
-      @attributes[:desc]
+      attributes[:desc]
     end
 
     def url
-      @attributes[:url]
+      attributes[:url]
     end
   end
 
   class List
+    attr_accessor :attributes
+
     def initialize(attrs = {})
       @attributes = attrs
       @cards = []
@@ -182,29 +202,77 @@ module Trello
     end
 
     def id
-      @attributes[:id]
+      attributes[:id]
     end
 
     def name
-      @attributes[:name]
+      attributes[:name]
     end
 
     def cards
       @cards
     end
+
+    def find_card(name = "")
+      card_obj = nil
+      cards.each do |card|
+        card_obj = card if card.name == name
+      end
+      if card_obj.nil?
+        puts "Card doesn't exist. Here are some card names."
+        cards.each do |card|
+          puts card.name
+        end
+      else
+        card_obj
+      end
+    end
   end
 
   class Card
+    attr_accessor :attributes, :url
+
     def initialize(attrs = {})
       @attributes = attrs
+      @url = "https://api.trello.com/1/cards/#{attributes[:id]}?fields=all&#{Trello.credentials}"
+      @card_json = nil
     end
 
     def id
-      @attributes[:id]
+      attributes[:id]
     end
 
     def name
-      @attributes[:name]
+      attributes[:name]
+    end
+
+    def due
+      Time.parse(card_json[:due]).strftime("%d/%m/%y")
+    end
+
+    def card_json
+      @card_json ||= Trello.parse(url)
+    end
+
+    def last_activity
+      Time.parse(card_json[:dateLastActivity]).strftime("%d/%m/%y")
+    end
+
+    def due_complete
+      card_json[:dueComplete]
+    end
+
+    def short_link
+      card_json[:shortUrl]
+    end
+
+    def status
+      unless due_complete
+        days = Date.parse(Time.now.strftime('%d/%m/%Y')) - Date.parse(due)
+        "Delayed by #{days.to_i} days"
+      else
+        "Done"
+      end
     end
   end
 end

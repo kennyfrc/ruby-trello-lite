@@ -4,6 +4,10 @@ This is a learning project using this gem: [ruby-trello](https://github.com/jere
 
 The idea behind this project is to replicate some features using the examples in the gem's documentation.
 
+## Other ways to enhance this project
+* Practice delegation (Forwardable)
+* Practice ActiveModel
+
 ## How to use this project
 
 1. Get your Trello API keys: [trello.com/api-key](https://trello.com/app-key/)
