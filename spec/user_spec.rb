@@ -62,6 +62,7 @@ describe "Member" do
     let(:list) {
       board.find_list("Moving Out")
     }
+    
     let(:card) {
       list.find_card("MIDDLE cabinet - buy cr2032 batter for garmin awatch")
     }
@@ -104,8 +105,8 @@ end
 ## check if the task was moved to another list
 ## LIST | check if we have any tasks created this week | https://developers.trello.com/reference#listsidactions
 ## LIST? | check the create date of the card | https://developers.trello.com/reference#listsidactions
-## Get members' cards for a board
-## Get members' cards for a board and a specific list
+## Get members' cards for a board | https://developers.trello.com/reference#membersidboards
+## Get members' cards for a board and a specific list | https://developers.trello.com/reference#membersidcards
 ## Post work units for a card
 ## Get work units for a card
 
