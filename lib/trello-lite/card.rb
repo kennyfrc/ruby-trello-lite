@@ -1,11 +1,13 @@
 module Trello
   class Card
-    attr_accessor :attributes, :url
+    attr_accessor :attributes, :url, :activities, :activities_url
 
     def initialize(attrs = {})
       @attributes = attrs
       @url = "https://api.trello.com/1/cards/#{attributes[:id]}?fields=all&#{Trello.credentials}"
+      @activities_url = "https://api.trello.com/1/cards/#{attributes[:id]}/actions?limit=5&#{Trello.credentials}"
       @card_json = nil
+      @activities = []
     end
 
     def id
@@ -42,6 +44,24 @@ module Trello
         "Delayed by #{days.to_i} days"
       else
         "Done"
+      end
+    end
+
+    def activities_url
+      @activities_url
+    end
+
+    def activities(limit = 5)
+      unless @activities.empty? || limit != 5
+        @activities
+      else
+        Trello.parse(activities_url).each_with_index do |activity, idx|
+          _activity = Activity.new(activity)
+          if _activity.type == "updateCard" && !_activity.old_list.nil?
+            @activities << _activity
+          end
+          break if @activities.size == limit
+        end
       end
     end
   end

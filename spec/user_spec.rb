@@ -90,6 +90,15 @@ describe "Member" do
     it "days ahead or before due" do
       expect(card.status).to eq "Delayed by #{(Date.parse(Time.now.strftime('%d/%m/%Y')) - Date.parse("17/08/15")).to_i} days"
     end
+
+    it "has activities" do
+      expect(card.activities.class).to eq Array
+      expect(card.activities[0].class).to eq Trello::Activity
+      expect(card.activities[0].type).to eq "updateCard"
+      expect(card.activities[0].old_list).to eq "miCab MKT & partnerships"
+      expect(card.activities[0].new_list).to eq "Moving Out"
+      expect(card.activities[0].updated_at).to eq "18/01/2020"
+    end
   end
 end
 
@@ -101,8 +110,8 @@ end
 ## DONE are we on or off the due date
 ## DONE check the date of last activity of that card
 ## DONE when is the due date of the card
-## check activities | https://developers.trello.com/reference#cardsidactions
-## check if the task was moved to another list
+## DONE - card changes only - check activities | https://developers.trello.com/reference#cardsidactions
+## DONE check if the task was moved to another list
 ## LIST | check if we have any tasks created this week | https://developers.trello.com/reference#listsidactions
 ## LIST? | check the create date of the card | https://developers.trello.com/reference#listsidactions
 ## Get members' cards for a board | https://developers.trello.com/reference#membersidboards

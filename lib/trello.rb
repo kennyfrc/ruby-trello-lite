@@ -7,6 +7,7 @@ module Trello
   autoload :Board,                  'trello-lite/board'
   autoload :Client,                 'trello-lite/client'
   autoload :Member,                 'trello-lite/member'
+  autoload :Activity,               'trello-lite/activity'
   autoload :Configuration,          'trello-lite/configuration'
 
   # parse url using httparty and return json
