@@ -76,7 +76,7 @@ describe "Member" do
     end
 
     it "has a last activity" do
-      expect(card.last_activity).to eq "16/01/20"
+      expect(card.last_activity).to eq "18/01/20"
     end
 
     it "has a due complete" do
