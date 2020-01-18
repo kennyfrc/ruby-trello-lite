@@ -16,22 +16,6 @@ describe "Member" do
     kenn.find_board("okrs")
   }
 
-  let(:lists) {
-    board.lists
-  }
-
-  let(:list) {
-    board.find_list("Moving Out")
-  }
-
-  let(:cards) {
-    lists.first.cards
-  }
-
-  let(:card) {
-    list.find_card("MIDDLE cabinet - buy cr2032 batter for garmin awatch")
-  }
-
   describe "has properties such as" do
     it "can return the full name" do
       expect(kenn.full_name).to eq "Kenn Costales"
@@ -60,24 +44,34 @@ describe "Member" do
   end
 
   describe "List" do
+    let(:list) {
+      board.find_list("Moving Out")
+    }
+
     it "get the list based on a name" do
       expect(list.name).to eq "Moving Out"
       expect(list.class).to eq Trello::List
     end
 
     it "get card name of a named list" do
-      expect(list.cards.class).to eq Array
       expect(list.cards[0].name).to eq "MIDDLE cabinet - buy cr2032 batter for garmin awatch"
     end
   end
 
   describe "Card" do
+    let(:list) {
+      board.find_list("Moving Out")
+    }
+    let(:card) {
+      list.find_card("MIDDLE cabinet - buy cr2032 batter for garmin awatch")
+    }
+
     it "can find a card based on the name" do
       expect(card.name).to eq "MIDDLE cabinet - buy cr2032 batter for garmin awatch"
     end
 
     it "has a due date" do
-      expect(card.due).to eq "08/17/15"
+      expect(card.due).to eq "17/08/15"
     end
 
     it "has a last activity" do
@@ -93,7 +87,7 @@ describe "Member" do
     end
 
     it "days ahead or before due" do
-      expect(card.status).to eq "Delayed by 884 days"
+      expect(card.status).to eq "Delayed by #{(Date.parse(Time.now.strftime('%d/%m/%Y')) - Date.parse("17/08/15")).to_i} days"
     end
   end
 end
@@ -110,6 +104,10 @@ end
 ## check if the task was moved to another list
 ## LIST | check if we have any tasks created this week | https://developers.trello.com/reference#listsidactions
 ## LIST? | check the create date of the card | https://developers.trello.com/reference#listsidactions
+## Get members' cards for a board
+## Get members' cards for a board and a specific list
+## Post work units for a card
+## Get work units for a card
 
 # check rate limit
 ## 300 requests per 10 seconds

@@ -148,7 +148,7 @@ module Trello
 
     def find(id)
       board_url = "https://api.trello.com/1/boards/#{id}?fields=all&#{credentials}"
-      board_list_url = "https://api.trello.com/1/boards/#{id}/lists?cards=open&card_fields=name&filter=open&fields=name&#{credentials}"
+      board_list_url = "https://api.trello.com/1/boards/#{id}/lists?cards=open&card_fields=name&filter=open&fields=all&#{credentials}"
       @attributes = Trello.parse(board_url)
       Trello.parse(board_list_url).each do |list_json|
         list = List.new(list_json)
