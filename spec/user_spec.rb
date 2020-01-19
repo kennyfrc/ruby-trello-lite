@@ -41,6 +41,15 @@ describe "Member" do
       expect(board.lists[0].class).to eq Trello::List
       expect(board.lists[0].name.class).to eq String
     end
+
+    # this will stop working if there's no card in the live boards that > 5 days old
+    # it "can get created cards from X" do
+    #   expect(board.check_created_cards_since(5.days.ago).class).to eq Array
+    #   expect(board.check_created_cards_since(5.days.ago)[0].class).to eq Trello::Activity
+    #   expect(board.check_created_cards_since(5.days.ago)[0].name).to eq "something"
+    #   expect(board.check_created_cards_since(5.days.ago)[0].short_link).to eq "https://trello.com/c/UPd7RKD4"
+    #   expect(board.check_created_cards_since(5.days.ago)[0].updated_at).to eq "19/01/2020"
+    # end
   end
 
   describe "List" do
@@ -76,7 +85,7 @@ describe "Member" do
     end
 
     it "has a last activity" do
-      expect(card.last_activity).to eq "18/01/20"
+      expect(card.last_activity).to eq "19/01/2020"
     end
 
     it "has a due complete" do
@@ -99,6 +108,11 @@ describe "Member" do
       expect(card.activities[0].new_list).to eq "Moving Out"
       expect(card.activities[0].updated_at).to eq "18/01/2020"
     end
+
+    it "has members" do
+      expect(card.members.class).to eq Array
+      expect(card.members[0].class).to eq Trello::Member
+    end
   end
 end
 
@@ -112,8 +126,9 @@ end
 ## DONE when is the due date of the card
 ## DONE - card changes only - check activities | https://developers.trello.com/reference#cardsidactions
 ## DONE check if the task was moved to another list
-## LIST | check if we have any tasks created this week | https://developers.trello.com/reference#listsidactions
-## LIST? | check the create date of the card | https://developers.trello.com/reference#listsidactions
+## DONE get members in a card
+## DONE LIST | check if we have any tasks created this week | https://developers.trello.com/reference#listsidactions
+## DONE LIST? | check the create date of the card | https://developers.trello.com/reference#listsidactions
 ## Get members' cards for a board | https://developers.trello.com/reference#membersidboards
 ## Get members' cards for a board and a specific list | https://developers.trello.com/reference#membersidcards
 ## Post work units for a card

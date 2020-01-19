@@ -5,3 +5,5 @@ gem 'httparty'
 gem 'pry-byebug'
 gem 'dotenv'
 gem 'rspec'
+# enable days.ago and other utility methods
+gem 'activesupport'

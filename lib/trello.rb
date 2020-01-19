@@ -1,5 +1,6 @@
 require 'httparty'
 require 'pry-byebug'
+require 'active_support/core_ext/integer/time'
 
 module Trello
   autoload :Card,                   'trello-lite/card'

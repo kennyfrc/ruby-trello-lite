@@ -10,6 +10,14 @@ module Trello
       attributes[:type]
     end
 
+    def name
+      attributes[:data][:card][:name]
+    end
+
+    def short_link 
+      "https://trello.com/c/" + attributes[:data][:card][:shortLink]
+    end
+
     def old_list
       unless attributes[:data][:listBefore].nil?
         attributes[:data][:listBefore][:name]

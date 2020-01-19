@@ -4,10 +4,11 @@ module Trello
 
     def initialize(attrs = {})
       @attributes = attrs
-      @url = "https://api.trello.com/1/cards/#{attributes[:id]}?fields=all&#{Trello.credentials}"
+      @url = "https://api.trello.com/1/cards/#{attributes[:id]}?fields=all&members=true&member_fields=fullName%2Cusername&#{Trello.credentials}"
       @activities_url = "https://api.trello.com/1/cards/#{attributes[:id]}/actions?limit=5&#{Trello.credentials}"
       @card_json = nil
       @activities = []
+      @members = []
     end
 
     def id
@@ -36,6 +37,13 @@ module Trello
 
     def short_link
       card_json[:shortUrl]
+    end
+
+    def members
+      card_json[:members].each do |member|
+        @members << Member.new(member)
+      end
+      @members
     end
 
     def status

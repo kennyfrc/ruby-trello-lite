@@ -6,6 +6,8 @@ module Trello
       @id = id
       @lists = []
       @attributes = attrs
+      @board_url = "https://api.trello.com/1/boards/#{id}?fields=all"
+      @board_list_url = "https://api.trello.com/1/boards/#{id}/lists?cards=open&card_fields=name&filter=open&fields=all"
       find(id)
     end
 
@@ -14,10 +16,8 @@ module Trello
     end
 
     def find(id)
-      board_url = "https://api.trello.com/1/boards/#{id}?fields=all&#{credentials}"
-      board_list_url = "https://api.trello.com/1/boards/#{id}/lists?cards=open&card_fields=name&filter=open&fields=all&#{credentials}"
-      @attributes = Trello.parse(board_url)
-      Trello.parse(board_list_url).each do |list_json|
+      @attributes = Trello.parse(@board_url + "&#{credentials}")
+      Trello.parse(@board_list_url + "&#{credentials}").each do |list_json|
         list = List.new(list_json)
         @lists << list
       end
@@ -37,6 +37,18 @@ module Trello
       else
         list_obj
       end
+    end
+
+    def check_created_cards_since(days_ago)
+      url = "https://api.trello.com/1/boards/#{id}/actions?#{credentials}"
+      activities = Trello.parse(url)
+      created_cards = []
+      activities.each do |activity|
+        if activity[:type] == "createCard" && Time.parse(activity[:date]) > days_ago
+          created_cards << Activity.new(activity)
+        end
+      end
+      created_cards
     end
 
     def lists
