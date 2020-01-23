@@ -122,6 +122,23 @@ describe "Member" do
       expect(card.members[0].class).to eq Trello::Member
     end
   end
+
+  describe "Organization" do
+    it "can get a list of organizations" do
+      expect(kenn.organizations[0].class).to eq Trello::Organization
+      expect(kenn.organizations.class).to eq Array
+    end
+
+    it "can filter organizations based on name" do
+      expect(kenn.get_orgs_by_name("MGV Operations")[0].class).to eq Trello::Organization
+      expect(kenn.get_orgs_by_name("MGV Operations").class).to eq Array
+    end
+
+    it "has board ids" do
+      expect(kenn.get_orgs_by_name("MGV Operations").map {|org| org.boards(1)}[0].class).to eq Array
+      expect(kenn.get_orgs_by_name("MGV Operations").map {|org| org.boards(1)}[0][0].class).to eq Trello::Board
+    end
+  end
 end
 
 
@@ -139,6 +156,7 @@ end
 ## DONE LIST? | check the create date of the card | https://developers.trello.com/reference#listsidactions
 ## DONE Get members' cards for a board | https://developers.trello.com/reference#membersidboards
 ## DONE Get members' cards for a board and a specific list | https://developers.trello.com/reference#membersidcards
+## DONE Organizations
 ## Post work units for a card
 ## Get work units for a card
 

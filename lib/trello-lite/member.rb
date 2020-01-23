@@ -9,6 +9,7 @@ module Trello
     def initialize(attrs = {})
       @attributes = attrs
       @boards = []
+      @organizations = []
     end
 
     def credentials
@@ -21,7 +22,7 @@ module Trello
     end
 
     def find(username)
-      url = "https://api.trello.com/1/members/#{username}?fields=all&#{credentials}"
+      url = "https://api.trello.com/1/members/#{username}?fields=all&organizations=members&organization_fields=all&#{credentials}"
       @attributes = Trello.parse(url)
       self
     end
@@ -57,6 +58,17 @@ module Trello
         break
       end
       board
+    end
+
+    def organizations
+      attributes[:organizations].each do |org|
+        @organizations << Organization.new(org)
+      end
+      @organizations
+    end
+
+    def get_orgs_by_name(name)
+      organizations.select { |org| org.display_name.include?(name) }
     end
   end
 end

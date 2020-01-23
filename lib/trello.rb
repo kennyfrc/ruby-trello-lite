@@ -10,6 +10,7 @@ module Trello
   autoload :Member,                 'trello-lite/member'
   autoload :Activity,               'trello-lite/activity'
   autoload :Configuration,          'trello-lite/configuration'
+  autoload :Organization,           'trello-lite/organization'
 
   # parse url using httparty and return json
   def self.parse(url)

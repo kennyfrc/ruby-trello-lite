@@ -17,6 +17,7 @@ module Trello
     end
 
     def find(id)
+      puts "creating board #{id}"
       @attributes = Trello.parse(@board_url + "&#{credentials}")
       attributes[:members].each do |member|
         member_obj = Member.new(member)
