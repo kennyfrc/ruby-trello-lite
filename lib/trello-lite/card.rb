@@ -61,6 +61,17 @@ module Trello
       end
     end
 
+    def work_units
+      url = "https://api.trello.com/1/cards/#{id}/customFieldItems?" + Trello.credentials
+      data = Trello.parse(url)
+      updated_data = data.select {|plugin| plugin[:value].keys.include?(:number)}
+      if updated_data.empty?
+        puts "kindly add work units"
+      else
+        updated_data[0][:value][:number].to_i
+      end
+    end
+
     def activities_url
       @activities_url
     end

@@ -59,12 +59,8 @@ describe "Member" do
       expect(board.find_list("Moving Out").cards_by_member("kennyfrc")[0].name).to eq "MIDDLE cabinet - buy cr2032 batter for garmin awatch"
     end
 
-    it "can check if it has the plugin", focus: true do
+    it "can check if it has the plugin" do
       expect(board.has_custom_fields?).to eq true
-    end
-
-    it "can add the custom fields plugin" do
-      
     end
 
     it "has custom fields" do
@@ -150,6 +146,10 @@ describe "Member" do
     it "has members" do
       expect(card.members.class).to eq Array
       expect(card.members[0].class).to eq Trello::Member
+    end
+
+    it "has work units", focus: true do
+      expect(card.work_units).to eq 1
     end
   end
 
