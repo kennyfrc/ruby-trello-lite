@@ -12,30 +12,12 @@ end
 # get member object for kennyfrc
 kenn = Trello::Member.find("kennyfrc")
 
-# return member's full name
-puts kenn.full_name
+kenn.get_orgs_by_name("MGV Operations").each do |org| 
+  org.boards.each do |board|
+    board.custom_fields.each do |custom_field|
+      custom_field.delete
+    end
 
-# return member's bio
-puts kenn.bio
-
-# boards
-puts kenn.boards(3)  
-
-# find board
-board = kenn.find_board("okrs")
-
-# get board name
-puts board.name
-
-# get all the lists of that board
-puts board.lists
-
-# print all the list names of that board
-board.lists.each do |list|
-  puts list.name
-end
-
-# print all the card names of the first list of the board
-board.lists.first.cards.each do |card|
-  puts card.name  
+    board.create_work_units_field
+  end
 end

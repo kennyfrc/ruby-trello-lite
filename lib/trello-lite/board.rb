@@ -1,4 +1,6 @@
 module Trello
+  require 'json'
+
   class Board
     attr_accessor :id, :lists, :attributes
 
@@ -6,9 +8,10 @@ module Trello
       @id = id
       @lists = []
       @attributes = attrs
-      @board_url = "https://api.trello.com/1/boards/#{id}?fields=all&members=all"
+      @board_url = "https://api.trello.com/1/boards/#{id}?fields=all&members=all&customFields=true"
       @board_list_url = "https://api.trello.com/1/boards/#{id}/lists?cards=open&card_fields=name&filter=open&fields=all"
       @members = []
+      @custom_fields = []
       find(id)
     end
 
@@ -17,11 +20,14 @@ module Trello
     end
 
     def find(id)
-      puts "creating board #{id}"
+      # puts "creating board #{id}"
       @attributes = Trello.parse(@board_url + "&#{credentials}")
       attributes[:members].each do |member|
         member_obj = Member.new(member)
         @members << member_obj
+      end
+      attributes[:customFields].each do |custom_field|
+        @custom_fields << CustomField.new(custom_field)
       end
       Trello.parse(@board_list_url + "&#{credentials}").each do |list_json|
         list = List.new(list_json)
@@ -79,6 +85,29 @@ module Trello
 
     def url
       attributes[:url]
+    end
+
+    def custom_fields
+      @custom_fields
+    end
+
+    def create_work_units_field
+      url = "https://api.trello.com/1/customFields?" + Trello.credentials
+
+      wu_body = {
+        idModel: "#{id}",
+        modelType: "board",
+        name: "Work Units",
+        pos: "top",
+        type: "number",
+        display_cardFront: true
+      }
+
+      wu_headers = {
+        'Content-Type': 'application/json'
+      }
+      response = HTTParty.post(url, body: wu_body, format: :plain)
+      JSON.parse(response, symbolize_names: true)
     end
   end
 end

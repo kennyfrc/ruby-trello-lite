@@ -58,6 +58,28 @@ describe "Member" do
       expect(board.find_list("Moving Out").cards_by_member("kennyfrc")[0].class).to eq Trello::Card
       expect(board.find_list("Moving Out").cards_by_member("kennyfrc")[0].name).to eq "MIDDLE cabinet - buy cr2032 batter for garmin awatch"
     end
+
+    it "has custom fields" do
+      expect(board.custom_fields[0].class).to eq Trello::CustomField
+      expect(board.custom_fields[0].name).to eq "Work Units"
+    end
+
+    it "its custom fields can be deleted" do
+      custom_fields = board.custom_fields
+      custom_fields.each do |custom_field|
+        custom_field.delete
+      end
+      updated_board = kenn.find_board("okrs")
+      expect(updated_board.custom_fields).to eq []
+    end
+
+    it "can create new custom fields" do
+      json = board.create_work_units_field
+      updated_board = kenn.find_board("okrs")
+      expect(updated_board.custom_fields[0].class).to eq Trello::CustomField
+      expect(updated_board.custom_fields[0].name).to eq "Work Units"
+    end
+
   end
 
   describe "List" do
@@ -93,7 +115,7 @@ describe "Member" do
     end
 
     it "has a last activity" do
-      expect(card.last_activity).to eq "19/01/2020"
+      expect(card.last_activity).to eq Date.parse(Time.now.strftime('%d/%m/%Y')
     end
 
     it "has a due complete" do

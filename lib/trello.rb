@@ -11,6 +11,7 @@ module Trello
   autoload :Activity,               'trello-lite/activity'
   autoload :Configuration,          'trello-lite/configuration'
   autoload :Organization,           'trello-lite/organization'
+  autoload :CustomField,            'trello-lite/custom_field'
 
   # parse url using httparty and return json
   def self.parse(url)
