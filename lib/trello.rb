@@ -1,3 +1,4 @@
+$LOAD_PATH.unshift 'lib'
 require 'httparty'
 require 'pry-byebug'
 require 'active_support/core_ext/integer/time'

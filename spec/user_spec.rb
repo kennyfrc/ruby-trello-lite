@@ -59,6 +59,14 @@ describe "Member" do
       expect(board.find_list("Moving Out").cards_by_member("kennyfrc")[0].name).to eq "MIDDLE cabinet - buy cr2032 batter for garmin awatch"
     end
 
+    it "can check if it has the plugin", focus: true do
+      expect(board.has_custom_fields?).to eq true
+    end
+
+    it "can add the custom fields plugin" do
+      
+    end
+
     it "has custom fields" do
       expect(board.custom_fields[0].class).to eq Trello::CustomField
       expect(board.custom_fields[0].name).to eq "Work Units"
@@ -115,7 +123,7 @@ describe "Member" do
     end
 
     it "has a last activity" do
-      expect(card.last_activity).to eq Date.parse(Time.now.strftime('%d/%m/%Y')
+      expect(card.last_activity).to eq Date.parse(Time.now.strftime('%d/%m/%Y'))
     end
 
     it "has a due complete" do

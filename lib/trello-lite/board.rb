@@ -87,8 +87,22 @@ module Trello
       attributes[:url]
     end
 
+    def has_custom_fields?
+      url = "https://api.trello.com/1/boards/#{id}/plugins?filter=enabled&" + Trello.credentials
+      plugin_list = Trello.parse(url)
+      !plugin_list.select { |plugin| plugin[:name] == "Custom Fields"}.empty?
+    end
+
     def custom_fields
       @custom_fields
+    end
+
+    def enable_custom_fields
+      cf_id = "56d5e249a98895a9797bebb9"
+      url = "https://api.trello.com/1/boards/#{id}/boardPlugins?idPlugin=#{cf_id}&" + Trello.credentials
+
+      response = HTTParty.post(url, format: :plain)
+      JSON.parse(response, symbolize_names: true)
     end
 
     def create_work_units_field
