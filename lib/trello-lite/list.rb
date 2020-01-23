@@ -23,6 +23,16 @@ module Trello
       @cards
     end
 
+    def cards_by_member(username)
+      members_cards = []
+      @cards.each do |card|
+        member_in_card = card.members.select { |member| member.username == username }
+        next if member_in_card.empty?
+        members_cards << card
+      end
+      members_cards
+    end
+
     def find_card(name = "")
       card_obj = nil
       cards.each do |card|

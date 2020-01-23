@@ -1,6 +1,6 @@
 module Trello
   class Card
-    attr_accessor :attributes, :url, :activities, :activities_url
+    attr_accessor :attributes, :url, :activities, :activities_url, :members
 
     def initialize(attrs = {})
       @attributes = attrs
@@ -20,7 +20,7 @@ module Trello
     end
 
     def due
-      Time.parse(card_json[:due]).strftime("%d/%m/%y")
+      Time.parse(card_json[:due]).strftime("%d/%m/%Y")
     end
 
     def card_json
@@ -28,7 +28,7 @@ module Trello
     end
 
     def last_activity
-      Time.parse(card_json[:dateLastActivity]).strftime("%d/%m/%y")
+      Time.parse(card_json[:dateLastActivity]).strftime("%d/%m/%Y")
     end
 
     def due_complete
@@ -40,10 +40,16 @@ module Trello
     end
 
     def members
+      if @members.empty?
+        create_members
+      end
+      @members
+    end
+
+    def create_members
       card_json[:members].each do |member|
         @members << Member.new(member)
       end
-      @members
     end
 
     def status

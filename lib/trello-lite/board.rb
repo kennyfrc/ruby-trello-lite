@@ -6,8 +6,9 @@ module Trello
       @id = id
       @lists = []
       @attributes = attrs
-      @board_url = "https://api.trello.com/1/boards/#{id}?fields=all"
+      @board_url = "https://api.trello.com/1/boards/#{id}?fields=all&members=all"
       @board_list_url = "https://api.trello.com/1/boards/#{id}/lists?cards=open&card_fields=name&filter=open&fields=all"
+      @members = []
       find(id)
     end
 
@@ -17,6 +18,10 @@ module Trello
 
     def find(id)
       @attributes = Trello.parse(@board_url + "&#{credentials}")
+      attributes[:members].each do |member|
+        member_obj = Member.new(member)
+        @members << member_obj
+      end
       Trello.parse(@board_list_url + "&#{credentials}").each do |list_json|
         list = List.new(list_json)
         @lists << list
@@ -36,6 +41,14 @@ module Trello
         end
       else
         list_obj
+      end
+    end
+
+    def find_member(name)
+      @members.each do |member|
+        if name == member.full_name || name == member.username
+          return member
+        end
       end
     end
 

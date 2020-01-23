@@ -35,7 +35,7 @@ module Trello
     end
 
     def username
-      @username
+      @username ||= attributes[:username]
     end
 
     # just returns an array for now - would be cool to use activemodel

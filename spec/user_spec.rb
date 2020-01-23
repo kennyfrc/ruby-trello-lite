@@ -50,6 +50,14 @@ describe "Member" do
     #   expect(board.check_created_cards_since(5.days.ago)[0].short_link).to eq "https://trello.com/c/UPd7RKD4"
     #   expect(board.check_created_cards_since(5.days.ago)[0].updated_at).to eq "19/01/2020"
     # end
+
+    ## Get members' cards for a board | https://developers.trello.com/reference#membersidboards
+
+    it "can get members' cards in a board" do
+      expect(board.find_list("Moving Out").cards_by_member("kennyfrc").class).to eq Array
+      expect(board.find_list("Moving Out").cards_by_member("kennyfrc")[0].class).to eq Trello::Card
+      expect(board.find_list("Moving Out").cards_by_member("kennyfrc")[0].name).to eq "MIDDLE cabinet - buy cr2032 batter for garmin awatch"
+    end
   end
 
   describe "List" do
@@ -81,7 +89,7 @@ describe "Member" do
     end
 
     it "has a due date" do
-      expect(card.due).to eq "17/08/15"
+      expect(card.due).to eq "17/08/2015"
     end
 
     it "has a last activity" do
@@ -97,7 +105,7 @@ describe "Member" do
     end
 
     it "days ahead or before due" do
-      expect(card.status).to eq "Delayed by #{(Date.parse(Time.now.strftime('%d/%m/%Y')) - Date.parse("17/08/15")).to_i} days"
+      expect(card.status).to eq "Delayed by #{(Date.parse(Time.now.strftime('%d/%m/%Y')) - Date.parse("17/08/2015")).to_i} days"
     end
 
     it "has activities" do
@@ -129,8 +137,8 @@ end
 ## DONE get members in a card
 ## DONE LIST | check if we have any tasks created this week | https://developers.trello.com/reference#listsidactions
 ## DONE LIST? | check the create date of the card | https://developers.trello.com/reference#listsidactions
-## Get members' cards for a board | https://developers.trello.com/reference#membersidboards
-## Get members' cards for a board and a specific list | https://developers.trello.com/reference#membersidcards
+## DONE Get members' cards for a board | https://developers.trello.com/reference#membersidboards
+## DONE Get members' cards for a board and a specific list | https://developers.trello.com/reference#membersidcards
 ## Post work units for a card
 ## Get work units for a card
 
