@@ -119,7 +119,7 @@ describe "Member" do
     end
 
     it "has a last activity" do
-      expect(card.last_activity).to eq Date.parse(Time.now.strftime('%d/%m/%Y'))
+      expect(card.last_activity).to eq Date.parse(Time.now.strftime('%d/%m/%Y')).strftime('%d/%m/%Y')
     end
 
     it "has a due complete" do
@@ -148,8 +148,8 @@ describe "Member" do
       expect(card.members[0].class).to eq Trello::Member
     end
 
-    it "has work units", focus: true do
-      expect(card.work_units).to eq 1
+    it "has work units" do
+      expect(card.work_units).to eq nil
     end
   end
 
